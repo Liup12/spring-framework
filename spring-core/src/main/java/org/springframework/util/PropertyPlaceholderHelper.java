@@ -126,6 +126,13 @@ public class PropertyPlaceholderHelper {
 		return parseStringValue(value, placeholderResolver, null);
 	}
 
+	/**
+	 * String字符串解析
+	 * @param value 需要解析的值
+	 * @param placeholderResolver 函数式接口
+	 * @param visitedPlaceholders 已访问占位符
+	 * @return
+	 */
 	protected String parseStringValue(
 			String value, PlaceholderResolver placeholderResolver, @Nullable Set<String> visitedPlaceholders) {
 
@@ -148,14 +155,20 @@ public class PropertyPlaceholderHelper {
 							"Circular placeholder reference '" + originalPlaceholder + "' in property definitions");
 				}
 				// Recursive invocation, parsing placeholders contained in the placeholder key.
+				// 递归调用此方法，查询嵌套占位符
 				placeholder = parseStringValue(placeholder, placeholderResolver, visitedPlaceholders);
-				// Now obtain the value for the fully resolved key...
+				// Now obtain the value for the fully resolved key....
+				// 调用函数式接口，获取key对应的value
 				String propVal = placeholderResolver.resolvePlaceholder(placeholder);
+				// 下面尝试赋值为默认值  "${server.port:8080}"
 				if (propVal == null && this.valueSeparator != null) {
 					int separatorIndex = placeholder.indexOf(this.valueSeparator);
 					if (separatorIndex != -1) {
+						// 真实的占位符 server.port
 						String actualPlaceholder = placeholder.substring(0, separatorIndex);
+						// server.port:8080 中 : 后的 8080
 						String defaultValue = placeholder.substring(separatorIndex + this.valueSeparator.length());
+						// 再使用actualPlaceholder调用一次函数式接口, 如果获取不到就使用默认值代替
 						propVal = placeholderResolver.resolvePlaceholder(actualPlaceholder);
 						if (propVal == null) {
 							propVal = defaultValue;
@@ -165,11 +178,15 @@ public class PropertyPlaceholderHelper {
 				if (propVal != null) {
 					// Recursive invocation, parsing placeholders contained in the
 					// previously resolved placeholder value.
+					// 解析value中的占位符
 					propVal = parseStringValue(propVal, placeholderResolver, visitedPlaceholders);
+
+					// 将${server.port:8080} 替换为 propVal = 8080
 					result.replace(startIndex, endIndex + this.placeholderSuffix.length(), propVal);
 					if (logger.isTraceEnabled()) {
 						logger.trace("Resolved placeholder '" + placeholder + "'");
 					}
+					// 结果中是否包含"8080${}"的情况
 					startIndex = result.indexOf(this.placeholderPrefix, startIndex + propVal.length());
 				}
 				else if (this.ignoreUnresolvablePlaceholders) {

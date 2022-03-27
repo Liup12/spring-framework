@@ -33,6 +33,7 @@ public interface PropertyResolver {
 	 * Return whether the given property key is available for resolution,
 	 * i.e. if the value for the given key is not {@code null}.
 	 */
+	// 判断是否包含此属性
 	boolean containsProperty(String key);
 
 	/**
@@ -43,6 +44,7 @@ public interface PropertyResolver {
 	 * @see #getProperty(String, Class)
 	 * @see #getRequiredProperty(String)
 	 */
+	// 获取属性
 	@Nullable
 	String getProperty(String key);
 
@@ -54,6 +56,7 @@ public interface PropertyResolver {
 	 * @see #getRequiredProperty(String)
 	 * @see #getProperty(String, Class)
 	 */
+	// 获取属性，如果找不到属性则赋默认值
 	String getProperty(String key, String defaultValue);
 
 	/**
@@ -63,6 +66,7 @@ public interface PropertyResolver {
 	 * @param targetType the expected type of the property value
 	 * @see #getRequiredProperty(String, Class)
 	 */
+	// 通过类型查找属性
 	@Nullable
 	<T> T getProperty(String key, Class<T> targetType);
 
@@ -81,6 +85,7 @@ public interface PropertyResolver {
 	 * @throws IllegalStateException if the key cannot be resolved
 	 * @see #getRequiredProperty(String, Class)
 	 */
+	// 获取string类型的参数，没有则抛出异常
 	String getRequiredProperty(String key) throws IllegalStateException;
 
 	/**
@@ -88,6 +93,7 @@ public interface PropertyResolver {
 	 * targetType (never {@code null}).
 	 * @throws IllegalStateException if the given key cannot be resolved
 	 */
+	// 获取指定类型的参数，没有则抛出异常
 	<T> T getRequiredProperty(String key, Class<T> targetType) throws IllegalStateException;
 
 	/**
@@ -99,6 +105,7 @@ public interface PropertyResolver {
 	 * @throws IllegalArgumentException if given text is {@code null}
 	 * @see #resolveRequiredPlaceholders
 	 */
+	// 解析${...}这种类型的占位符，把他们替换为使用getProperty方法返回的结果，解析不了并且没有默认值的占位符会被忽略（原样输出）
 	String resolvePlaceholders(String text);
 
 	/**
@@ -109,6 +116,7 @@ public interface PropertyResolver {
 	 * @throws IllegalArgumentException if given text is {@code null}
 	 * or if any placeholders are unresolvable
 	 */
+	// 解析不了就抛出一次
 	String resolveRequiredPlaceholders(String text) throws IllegalArgumentException;
 
 }
