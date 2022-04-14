@@ -68,18 +68,26 @@ public interface ApplicationContext extends EnvironmentCapable, ListableBeanFact
 	/**
 	 * Return a name for the deployed application that this context belongs to.
 	 * @return a name for the deployed application, or the empty String by default
+	 *
+	 * 返回当前上下文名称
 	 */
 	String getApplicationName();
 
 	/**
 	 * Return a friendly name for this context.
 	 * @return a display name for this context (never {@code null})
+	 *
+	 * 返回当前上下文展示的名称
+	 *
+	 * 当前上下文类名 +"@" + hash
+	 *
 	 */
 	String getDisplayName();
 
 	/**
 	 * Return the timestamp when this context was first loaded.
 	 * @return the timestamp (ms) when this context was first loaded
+	 * 返回当前上下文加载时间戳
 	 */
 	long getStartupDate();
 
@@ -87,6 +95,9 @@ public interface ApplicationContext extends EnvironmentCapable, ListableBeanFact
 	 * Return the parent context, or {@code null} if there is no parent
 	 * and this is the root of the context hierarchy.
 	 * @return the parent context, or {@code null} if there is no parent
+	 *
+	 * 返回父上下文，如果当前上下文没有父上下文，则返回null
+	 *
 	 */
 	@Nullable
 	ApplicationContext getParent();

@@ -195,6 +195,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
 
 	/** System time in milliseconds when this context started. */
+	// 上下文启动时间
 	private long startupDate;
 
 	/** Flag that indicates whether this context is currently active. */
@@ -277,6 +278,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		return this.id;
 	}
 
+	//仅web上下文才有applicationName
 	@Override
 	public String getApplicationName() {
 		return "";
