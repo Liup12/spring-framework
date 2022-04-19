@@ -108,9 +108,16 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	private final Map<String, Set<String>> containedBeanMap = new ConcurrentHashMap<>(16);
 
 	/** Map between dependent bean names: bean name to Set of dependent bean names. */
+	// 依赖我的Bean, 即KEY对应的Bean对象被谁依赖了
+	// 例如 A 依赖 B、C, 此时会有两条明细
+	// KEY: B, VALUE: A
+	// KEY: C, VALUE: A
 	private final Map<String, Set<String>> dependentBeanMap = new ConcurrentHashMap<>(64);
 
 	/** Map between depending bean names: bean name to Set of bean names for the bean's dependencies. */
+	// 我依赖的Bean， 即KEY对应的Bean对象依赖了哪些对象
+	// 例如 A 依赖 B、C
+	// KEY: A, VALUE: B、C
 	private final Map<String, Set<String>> dependenciesForBeanMap = new ConcurrentHashMap<>(64);
 
 
@@ -494,6 +501,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * @return the array of names of beans which the bean depends on,
 	 * or an empty array if none
 	 */
+	// 我依赖的bean
 	public String[] getDependenciesForBean(String beanName) {
 		Set<String> dependenciesForBean = this.dependenciesForBeanMap.get(beanName);
 		if (dependenciesForBean == null) {

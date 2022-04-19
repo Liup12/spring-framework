@@ -103,7 +103,7 @@ public interface ListableBeanFactory extends BeanFactory {
 	 * @see #getBeanProvider(ResolvableType, boolean)
 	 * @see #getBeanProvider(Class)
 	 * @see #getBeansOfType(Class, boolean, boolean)
-	 * @see #getBeanNamesForType(Class, boolean, boolean)
+	 * @see #getBeanNamesForType(Class, boolean, boolean)getBeanProvider
 	 */
 	<T> ObjectProvider<T> getBeanProvider(Class<T> requiredType, boolean allowEagerInit);
 
