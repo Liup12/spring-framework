@@ -245,9 +245,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		Object beanInstance;
 
 		// Eagerly check singleton cache for manually registered singletons.
+		// 双检锁获取单例bean
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null && args == null) {
 			if (logger.isTraceEnabled()) {
+				// 判断当前Bean是否处于创建中
 				if (isSingletonCurrentlyInCreation(beanName)) {
 					logger.trace("Returning eagerly cached instance of singleton bean '" + beanName +
 							"' that is not fully initialized yet - a consequence of a circular reference");
@@ -286,8 +288,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					return (T) parentBeanFactory.getBean(nameToLookup);
 				}
 			}
-
+			// 只检查类型为false
 			if (!typeCheckOnly) {
+				// 将bean添加到alreadyCreated的缓存中，
+				// 从mergedBeanDefinitions缓存中获取到beanName对应的beanDefinition信息，将其状态改为true
 				markBeanAsCreated(beanName);
 			}
 
@@ -1703,6 +1707,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				if (!this.alreadyCreated.contains(beanName)) {
 					// Let the bean definition get re-merged now that we're actually creating
 					// the bean... just in case some of its metadata changed in the meantime.
+					//从mergedBeanDefinitions缓存中获取到beanName对应的beanDefinition信息，将其状态改为true
 					clearMergedBeanDefinition(beanName);
 					this.alreadyCreated.add(beanName);
 				}
