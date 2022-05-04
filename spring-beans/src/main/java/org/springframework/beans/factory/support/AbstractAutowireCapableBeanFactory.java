@@ -504,6 +504,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		// Prepare method overrides.
 		try {
+			// 准备方法重写
+			// 使用ClassUtil获取当前beanDefinition中Class对应的method名称个数count，
+			// 根据count修改MethodOverride对象中overloaded属性（count = 1 表示此方法未被重写，overloaded = false）
 			mbdToUse.prepareMethodOverrides();
 		}
 		catch (BeanDefinitionValidationException ex) {
